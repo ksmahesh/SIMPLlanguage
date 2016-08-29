@@ -1,0 +1,18 @@
+// We can define factorial recursively as follows:
+
+// First we declare the type of the factorial function
+fun(int->int) factorial;
+
+// Next we create a dummy assignment to satisfy the type-checker that
+// factorial() is never used uninitialized.
+factorial := fun(int ret) { skip };
+
+// Finally, we define the factorial function recursively.
+factorial := fun(int x) {
+  int ret; ret := 1;
+  if x<=1 then skip else ret := x*factorial(x-1)
+};
+
+int ret;
+ret := factorial(arg0)
+

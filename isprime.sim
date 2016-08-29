@@ -1,0 +1,43 @@
+// Here is a version of isprime.imp that uses functions.
+
+// divides(x) returns true if x divides arg0 and returns false otherwise
+fun(int->bool) divides;
+divides := fun(int x) {
+  bool ret; ret := false;
+  int z; z := x;
+  while (!ret && (z <= arg0)) do (
+    if (arg0 <= z) then
+      ret := true
+    else
+      z := z + x
+  )
+};
+
+// exists(f,g,x) returns true if there exists an integer y such that
+//   (1) y >= x
+//   (2) all integers z in x..y cause g(z) to return true, and
+//   (2) f(y) returns true.
+fun(fun(int->bool) * fun(int->bool) * int -> bool) exists;
+exists := fun(fun(int->bool) test, fun(int->bool) cont, int i) {
+  bool ret; ret := false;
+  while (!ret && cont(i)) do (
+    if test(i) then
+      ret := true
+    else
+      i := i + 1
+  )
+};
+
+// To decide whether arg0 is prime, we decide whether there exists an integer
+// x such that x>=2, x*2<=arg0, and x divides arg0.
+bool isprime;
+isprime := false;
+if (arg0 <= 1) then
+  skip
+else
+  isprime := !exists(divides,
+                     fun(int x) { bool ret; ret := (x*2 <= arg0) },
+                     2);
+bool ret;
+ret := isprime
+
